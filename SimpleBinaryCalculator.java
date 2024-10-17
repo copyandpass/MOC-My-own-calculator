@@ -160,7 +160,7 @@ public class SimpleBinaryCalculator extends JFrame {
     }
 
     //홈PC 커밋 테스트
-    
+    //ㅇㅇㅇㅇㅇ
  // GUI에서 배운대로 setVisible(true)를 메인함수에 실행시킴으로써 계산기를 완성시킴.
     public static void main(String[] args) {
         SimpleBinaryCalculator calculator = new SimpleBinaryCalculator();
