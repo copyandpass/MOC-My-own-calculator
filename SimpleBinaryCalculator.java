@@ -1,7 +1,8 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-// JFrame에 필요 한 모듈들을 임포트 해줍니다. ActionEvent,ActionListener는 챗지피티 참조
+
 public class SimpleBinaryCalculator extends JFrame {
     private JTextField binaryField1;
     private JTextField binaryField2;
@@ -11,65 +12,61 @@ public class SimpleBinaryCalculator extends JFrame {
     private JButton andButton;
     private JButton orButton;
     private JButton xorButton;
-//버튼들을 하나의 객체로 설정 해줍니다.
+
     public SimpleBinaryCalculator() {
-        // 창 제목과 크기 설정 (버튼들이 붙지 않게 좀 넓게 세팅 해줍니다)
+        // 창 제목과 크기 설정
         setTitle("2진수-10진수 변환기");
-        setSize(300, 400);
+        setSize(400, 250);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(null);
+        setLayout(new BorderLayout());
+
+        // 패널 생성 및 레이아웃 설정
+        JPanel inputPanel = new JPanel(new GridLayout(3, 2, 10, 10)); // 입력 필드 정렬용
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 3, 10, 10)); // 비트 연산 버튼 정렬용
+        JPanel conversionPanel = new JPanel(new GridLayout(1, 2, 10, 10)); // 변환 버튼 정렬용
 
         // 첫 번째 2진수 입력 필드와 라벨
         JLabel binLabel1 = new JLabel("2진수 1:");
-        binLabel1.setBounds(30, 30, 80, 25);
-        add(binLabel1);
-
         binaryField1 = new JTextField();
-        binaryField1.setBounds(110, 30, 150, 25);
-        add(binaryField1);
+        inputPanel.add(binLabel1);
+        inputPanel.add(binaryField1);
 
         // 두 번째 2진수 입력 필드와 라벨 (비트 연산용)
         JLabel binLabel2 = new JLabel("2진수 2:");
-        binLabel2.setBounds(30, 70, 80, 25);
-        add(binLabel2);
-
         binaryField2 = new JTextField();
-        binaryField2.setBounds(110, 70, 150, 25);
-        add(binaryField2);
+        inputPanel.add(binLabel2);
+        inputPanel.add(binaryField2);
 
         // 10진수 입력 필드와 라벨
         JLabel decLabel = new JLabel("10진수:");
-        decLabel.setBounds(30, 110, 80, 25);
-        add(decLabel);
-
         decimalField = new JTextField();
-        decimalField.setBounds(110, 110, 150, 25);
-        add(decimalField);
+        inputPanel.add(decLabel);
+        inputPanel.add(decimalField);
 
         // 2진수 -> 10진수 변환 버튼
         binToDecButton = new JButton("2진수 -> 10진수");
-        binToDecButton.setBounds(30, 150, 200, 30);
-        add(binToDecButton);
+        conversionPanel.add(binToDecButton);
 
         // 10진수 -> 2진수 변환 버튼
         decToBinButton = new JButton("10진수 -> 2진수");
-        decToBinButton.setBounds(30, 190, 200, 30);
-        add(decToBinButton);
+        conversionPanel.add(decToBinButton);
 
         // AND 연산 버튼
         andButton = new JButton("AND");
-        andButton.setBounds(30, 230, 70, 30);
-        add(andButton);
+        buttonPanel.add(andButton);
 
         // OR 연산 버튼
         orButton = new JButton("OR");
-        orButton.setBounds(110, 230, 70, 30);
-        add(orButton);
+        buttonPanel.add(orButton);
 
         // XOR 연산 버튼
         xorButton = new JButton("XOR");
-        xorButton.setBounds(190, 230, 70, 30);
-        add(xorButton);
+        buttonPanel.add(xorButton);
+
+        // 패널들을 프레임에 추가
+        add(inputPanel, BorderLayout.CENTER); // 입력 필드 패널을 가운데에 배치
+        add(conversionPanel, BorderLayout.NORTH); // 변환 버튼 패널을 위쪽에 배치
+        add(buttonPanel, BorderLayout.SOUTH); // 비트 연산 버튼 패널을 아래쪽에 배치
 
         // 2진수 -> 10진수 변환 기능
         binToDecButton.addActionListener(new ActionListener() {
@@ -100,7 +97,7 @@ public class SimpleBinaryCalculator extends JFrame {
             }
         });
 
-        // AND 연산 기능 자바프로그래밍. p.63참조
+        // AND 연산 기능
         andButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -108,7 +105,7 @@ public class SimpleBinaryCalculator extends JFrame {
             }
         });
 
-        // OR 연산 기능  자바프로그래밍. p.64참조
+        // OR 연산 기능
         orButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -116,7 +113,7 @@ public class SimpleBinaryCalculator extends JFrame {
             }
         });
 
-        // XOR 연산 기능  자바프로그래밍. p.65참조
+        // XOR 연산 기능
         xorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -125,7 +122,7 @@ public class SimpleBinaryCalculator extends JFrame {
         });
     }
 
-    // 비트 연산 수행 메서드 자바 자바프로그래밍. p.73참조, 챗 지피티를 활용한 결과값 도출
+    // 비트 연산 수행 메서드
     private void performBitwiseOperation(String operation) {
         try {
             int binary1 = Integer.parseInt(binaryField1.getText(), 2);
