@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-// 내가 쓸 함수에 대한 import 해주기.
+
 public class SimpleBinaryCalculator extends JFrame {
     private JTextField binaryField1;
     private JTextField binaryField2;
@@ -12,21 +12,25 @@ public class SimpleBinaryCalculator extends JFrame {
     private JButton andButton;
     private JButton orButton;
     private JButton xorButton;
-// 버튼과 출력값을 만들기위해 객체 생성
-
+    private JButton dummyButton1; // 의미 없는 버튼 1
+    private JButton dummyButton2; // 의미 없는 버튼 2
+//두 개의 의미 없는 버튼: dummyButton1과 dummyButton2를 
+//dummyButtonPanel에 추가하고, BorderLayout.EAST에 배치했습니다.
     public SimpleBinaryCalculator() {
         // 창 제목과 크기 설정
         // 창이 너무 작아서 400,250에서 500,300으로 변경 
         setTitle("2진수-10진수 변환기");
-        setSize(500, 300);
+        setSize(500, 300); // 크기를 조금 키움 (버튼 추가를 위해)
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
         // 패널 생성 및 레이아웃 설정
+        //패널들의 크기와 위치는 다른 코드에서 실험 해봄.
         JPanel inputPanel = new JPanel(new GridLayout(3, 2, 10, 10)); // 입력 필드 정렬용
         JPanel buttonPanel = new JPanel(new GridLayout(1, 3, 10, 10)); // 비트 연산 버튼 정렬용
-        JPanel conversionPanel = new JPanel(new GridLayout(1, 2, 10, 10)); // 변환 버튼 정렬용 
-
+        JPanel conversionPanel = new JPanel(new GridLayout(1, 2, 10, 10)); // 변환 버튼 정렬용
+        JPanel dummyButtonPanel = new JPanel(new GridLayout(1, 2, 10, 10)); // 의미 없는 버튼 정렬용
+        //필드 라벨링과 변환 버튼들은 챗 GPT를 참고함.
         // 첫 번째 2진수 입력 필드와 라벨
         JLabel binLabel1 = new JLabel("2진수 1:");
         binaryField1 = new JTextField();
@@ -65,11 +69,21 @@ public class SimpleBinaryCalculator extends JFrame {
         xorButton = new JButton("XOR");
         buttonPanel.add(xorButton);
 
+        // 의미 없는 버튼 1
+        dummyButton1 = new JButton("기능 없음 1");
+        dummyButtonPanel.add(dummyButton1);
+
+        // 의미 없는 버튼 2
+        dummyButton2 = new JButton("기능 없음 2");
+        dummyButtonPanel.add(dummyButton2);
+
         // 패널들을 프레임에 추가
+        // 동서 남북 위치를 인간이 보기 쉽게 위가 입력 아래가 출력으로 했음.
         add(inputPanel, BorderLayout.CENTER); // 입력 필드 패널을 가운데에 배치
         add(conversionPanel, BorderLayout.NORTH); // 변환 버튼 패널을 위쪽에 배치
         add(buttonPanel, BorderLayout.SOUTH); // 비트 연산 버튼 패널을 아래쪽에 배치
-
+        add(dummyButtonPanel, BorderLayout.EAST); // 의미 없는 버튼 패널을 오른쪽에 배치
+      //10진수에서 2진수 변환 하는것은 교재p.65와 쳇GPT를 참고함.
         // 2진수 -> 10진수 변환 기능
         binToDecButton.addActionListener(new ActionListener() {
             @Override
@@ -83,7 +97,7 @@ public class SimpleBinaryCalculator extends JFrame {
                 }
             }
         });
-//10진수에서 2진수 변환 하는것은 교재p.65와 쳇GPT를 참고함.
+      //연산 기능들은 2학기 복학 이슈로 챗 GPT와 교재p.82를 참고함.
         // 10진수 -> 2진수 변환 기능
         decToBinButton.addActionListener(new ActionListener() {
             @Override
@@ -98,7 +112,7 @@ public class SimpleBinaryCalculator extends JFrame {
                 }
             }
         });
-//연산 기능들은 2학기 복학 이슈로 챗 GPT와 교재p.82를 참고함.
+
         // AND 연산 기능
         andButton.addActionListener(new ActionListener() {
             @Override
@@ -123,9 +137,8 @@ public class SimpleBinaryCalculator extends JFrame {
             }
         });
     }
-
-    // 비트 연산 수행 메서드 
-    //비트연산은 @see  https://dpcks5959.tistory.com/98 에서 참고하고 개념을 이해함.
+  //비트연산은 @see  https://dpcks5959.tistory.com/98 에서 참고하고 개념을 이해함.
+    // 비트 연산 수행 메서드
     private void performBitwiseOperation(String operation) {
         try {
             int binary1 = Integer.parseInt(binaryField1.getText(), 2);
@@ -145,7 +158,10 @@ public class SimpleBinaryCalculator extends JFrame {
             JOptionPane.showMessageDialog(null, "올바른 2진수를 입력하세요.");
         }
     }
-// GUI에서 배운대로 setVisible(true)를 메인함수에 실행시킴으로써 계산기를 완성시킴.
+
+    //홈PC 커밋 테스트
+    
+ // GUI에서 배운대로 setVisible(true)를 메인함수에 실행시킴으로써 계산기를 완성시킴.
     public static void main(String[] args) {
         SimpleBinaryCalculator calculator = new SimpleBinaryCalculator();
         calculator.setVisible(true);
