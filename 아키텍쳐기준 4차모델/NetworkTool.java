@@ -268,3 +268,4 @@ public class NetworkTool {
         return firstHost + " ~ " + lastHost;  // 호스트 범위 반환
     }
 }
+//readme.MD
