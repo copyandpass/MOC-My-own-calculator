@@ -33,22 +33,26 @@ public class NetworkTool {
     private static JPanel createNetworkPanel() {
         JPanel networkPanel = new JPanel();
         networkPanel.setLayout(new BoxLayout(networkPanel, BoxLayout.Y_AXIS));  // 수직으로 컴포넌트 배치
-        //오류 수정 부분
 
         // IP 주소와 서브넷 마스크 입력을 위한 텍스트 필드와 라벨을 추가합니다.
         JLabel ipLabel = new JLabel("IP 주소:");
-        JTextField ipText = new JTextField(15);//오류 수정부분
+        JTextField ipText = new JTextField(15);
 
         JLabel subnetLabel = new JLabel("서브넷 마스크:");
-        JTextField subnetText = new JTextField(15);//오류 수정부분
+        JTextField subnetText = new JTextField(15);
 
         // 네트워크 아이디 계산 결과를 표시할 필드를 추가합니다.
         JLabel resultLabel = new JLabel("네트워크 아이디:");
-        JTextField resultText = new JTextField(15);//오류 수정부분
+        JTextField resultText = new JTextField(15);
         resultText.setEditable(false);  // 결과 필드는 사용자가 수정할 수 없도록 설정합니다.
 
-        // 계산 버튼을 추가하여 클릭 시 IP와 서브넷 마스크로부터 네트워크 아이디를 계산합니다.
-        JButton calculateButton = new JButton("계산");//오류 수정부분
+        // 브로드캐스트 주소 결과를 표시할 필드를 추가합니다.
+        JLabel broadcastLabel = new JLabel("브로드캐스트 주소:");
+        JTextField broadcastText = new JTextField(15);
+        broadcastText.setEditable(false);  // 결과 필드는 수정 불가능
+
+        // 계산 버튼을 추가하여 클릭 시 IP와 서브넷 마스크로부터 네트워크 아이디 및 브로드캐스트 주소를 계산합니다.
+        JButton calculateButton = new JButton("계산");
 
         // 버튼 클릭 시 발생하는 이벤트를 처리하는 리스너를 추가합니다.
         calculateButton.addActionListener(new ActionListener() {
@@ -57,11 +61,13 @@ public class NetworkTool {
                 String ip = ipText.getText();
                 String subnet = subnetText.getText();
 
-                // 유효한 IP 주소와 서브넷 마스크인지 확인한 후, 네트워크 아이디를 계산합니다.
+                // 유효한 IP 주소와 서브넷 마스크인지 확인한 후, 네트워크 아이디 및 브로드캐스트 주소를 계산합니다.
                 if (isValidIPAddress(ip) && isValidIPAddress(subnet)) {
                     resultText.setText(calculateNetworkID(ip, subnet));  // 계산된 네트워크 아이디 출력
+                    broadcastText.setText(calculateBroadcastAddress(ip, subnet));  // 계산된 브로드캐스트 주소 출력
                 } else {
-                    resultText.setText("잘못된 입력입니다.");  // 유효하지 않은 입력일 경우 에러 메시지 출력
+                    resultText.setText("잘못된 입력입니다.");
+                    broadcastText.setText("잘못된 입력입니다.");  // 유효하지 않은 입력일 경우 에러 메시지 출력
                 }
             }
         });
@@ -73,6 +79,8 @@ public class NetworkTool {
         networkPanel.add(subnetText);
         networkPanel.add(resultLabel);
         networkPanel.add(resultText);
+        networkPanel.add(broadcastLabel);
+        networkPanel.add(broadcastText);
         networkPanel.add(calculateButton);
 
         return networkPanel;
@@ -81,20 +89,20 @@ public class NetworkTool {
     // 서브넷 계산기 패널을 생성하는 메서드입니다.
     private static JPanel createSubnetPanel() {
         JPanel subnetPanel = new JPanel();
-        subnetPanel.setLayout(new BoxLayout(subnetPanel, BoxLayout.Y_AXIS));//오류 수정부분
+        subnetPanel.setLayout(new BoxLayout(subnetPanel, BoxLayout.Y_AXIS));
 
         // 서브넷 마스크 입력 필드
         JLabel subnetMaskLabel = new JLabel("서브넷 마스크:");
-        JTextField subnetMaskText = new JTextField(15);//오류 수정부분
+        JTextField subnetMaskText = new JTextField(15);
 
         // 가능한 호스트 수 결과를 출력할 필드
         JLabel hostLabel = new JLabel("호스트 수:");
-        JTextField hostText = new JTextField(15);//오류 수정부분
+        JTextField hostText = new JTextField(15);
         hostText.setEditable(false);  // 결과 필드는 수정 불가능
 
         // 호스트 범위 필드를 추가합니다.
         JLabel rangeLabel = new JLabel("호스트 범위:");
-        JTextField rangeText = new JTextField(15);//오류 수정부분
+        JTextField rangeText = new JTextField(15);
         rangeText.setEditable(false);  // 결과 필드는 수정 불가능
 
         // 계산 버튼을 추가하여 클릭 시 서브넷 마스크로부터 호스트 수와 호스트 범위를 계산합니다.
@@ -133,15 +141,15 @@ public class NetworkTool {
     // 2진수 / 10진수 변환기 패널을 생성하는 메서드입니다.
     private static JPanel createConversionPanel() {
         JPanel conversionPanel = new JPanel();
-        conversionPanel.setLayout(new BoxLayout(conversionPanel, BoxLayout.Y_AXIS));//오류 수정부분
+        conversionPanel.setLayout(new BoxLayout(conversionPanel, BoxLayout.Y_AXIS));
 
         // 10진수 입력 필드
         JLabel decimalLabel = new JLabel("10진수:");
-        JTextField decimalText = new JTextField(15);//오류 수정부분
+        JTextField decimalText = new JTextField(15);
 
         // 2진수 입력 필드
         JLabel binaryLabel = new JLabel("2진수:");
-        JTextField binaryText = new JTextField(15);//오류 수정부분
+        JTextField binaryText = new JTextField(15);
 
         // 10진수를 2진수로 변환하는 버튼
         JButton toBinaryButton = new JButton("2진수 변환");
@@ -214,6 +222,20 @@ public class NetworkTool {
         return networkParts[0] + "." + networkParts[1] + "." + networkParts[2] + "." + networkParts[3];
     }
 
+    // IP 주소와 서브넷 마스크를 사용하여 브로드캐스트 주소를 계산하는 메서드를 추가합니다.
+    private static String calculateBroadcastAddress(String ip, String subnet) {
+        String[] ipParts = ip.split("\\.");
+        String[] subnetParts = subnet.split("\\.");
+
+        int[] broadcastParts = new int[4];
+        for (int i = 0; i < 4; i++) {
+            // 서브넷 마스크의 반전된 부분을 사용하여 브로드캐스트 주소 계산
+            broadcastParts[i] = Integer.parseInt(ipParts[i]) | (~Integer.parseInt(subnetParts[i]) & 255);
+        }
+
+        return broadcastParts[0] + "." + broadcastParts[1] + "." + broadcastParts[2] + "." + broadcastParts[3];
+    }
+
     // 서브넷 마스크로부터 호스트 수를 계산하는 메서드입니다.
     private static int calculateHostCount(String subnet) {
         String[] subnetParts = subnet.split("\\.");
@@ -246,4 +268,3 @@ public class NetworkTool {
         return firstHost + " ~ " + lastHost;  // 호스트 범위 반환
     }
 }
-//readme.md추가버전
