@@ -6,37 +6,46 @@ import java.awt.event.ActionListener;
 public class LastCalculator {
 
     public static void main(String[] args) {
-        // 메인 프레임을 생성하고 크기 및 레이아웃을 설정합니다.
         JFrame frame = createMainFrame();
 
-        // JTabbedPane을 사용하여 여러 기능을 탭으로 나눕니다.
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        // 네트워크 아이디 계산기, 서브넷 계산기, 2진수/10진수 변환기의 패널을 생성하여 탭에 추가합니다.
-        tabbedPane.addTab("네트워크 계산기", createNetworkPanel());
-        tabbedPane.addTab("서브넷 계산기", createSubnetPanel());
-        tabbedPane.addTab("2진수/10진수 변환", createConversionPanel());
+        tabbedPane.addTab("네트워크 계산기", createBackgroundPanel(createNetworkPanel()));
+        tabbedPane.addTab("서브넷 계산기", createBackgroundPanel(createSubnetPanel()));
+        tabbedPane.addTab("2진수/10진수 변환", createBackgroundPanel(createConversionPanel()));
 
-        // 탭 패널을 메인 프레임에 추가하고, 프레임을 보이도록 설정합니다.
         frame.add(tabbedPane);
         frame.setVisible(true);
     }
 
-    // 메인 프레임을 생성하는 메서드입니다.
     private static JFrame createMainFrame() {
         JFrame frame = new JFrame("LastCalculator");
-        frame.setSize(400, 250); // 프레임의 크기를 설정합니다.
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // X 버튼 클릭 시 프로그램 종료
+        frame.setSize(450, 450);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         return frame;
     }
 
-    // 네트워크 아이디 계산기를 위한 패널을 생성하는 메서드입니다.
+    private static JPanel createBackgroundPanel(JPanel mainPanel) {
+        // 배경 이미지 경로 설정
+        ImageIcon backgroundImage = new ImageIcon("C:\\Users\\admin\\Desktop\\MOC-Middle\\MOC-My-own-calculator\\아키텍쳐기준 5차(완성 모델)\\CaculatorBackGround.PNG");
+        
+        // JLabel에 배경 이미지 추가
+        JLabel backgroundLabel = new JLabel(backgroundImage);
+        backgroundLabel.setLayout(new BorderLayout());
+        backgroundLabel.add(mainPanel, BorderLayout.CENTER);
+
+        // 배경을 JPanel로 래핑하여 반환
+        JPanel backgroundPanel = new JPanel(new BorderLayout());
+        backgroundPanel.add(backgroundLabel, BorderLayout.CENTER);
+
+        return backgroundPanel;
+    }
+
     private static JPanel createNetworkPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(5, 5, 5, 5);
-        
-        // IP 주소와 서브넷 마스크 입력을 위한 텍스트 필드와 라벨을 추가합니다.
+
         JLabel ipLabel = new JLabel("IP 주소:");
         JTextField ipText = new JTextField(12);
 
@@ -66,24 +75,8 @@ public class LastCalculator {
                     broadcastText.setText("잘못된 입력입니다.");
                 }
             }
-
-            private String calculateBroadcastAddress(String ip, String subnet) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'calculateBroadcastAddress'");
-            }
-
-            private String calculateNetworkID(String ip, String subnet) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'calculateNetworkID'");
-            }
-
-            private boolean isValidIPAddress(String ip) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'isValidIPAddress'");
-            }
         });
 
-        // 패널에 컴포넌트를 추가합니다.
         c.gridx = 0; c.gridy = 0; panel.add(ipLabel, c);
         c.gridx = 1; panel.add(ipText, c);
         c.gridx = 0; c.gridy = 1; panel.add(subnetLabel, c);
@@ -94,6 +87,8 @@ public class LastCalculator {
         c.gridx = 1; panel.add(broadcastText, c);
         c.gridx = 1; c.gridy = 4; panel.add(calculateButton, c);
 
+        panel.setOpaque(false); // 배경 투명 설정
+
         return panel;
     }
 
@@ -101,7 +96,7 @@ public class LastCalculator {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(5, 5, 5, 5);
-        
+
         JLabel subnetMaskLabel = new JLabel("서브넷 마스크:");
         JTextField subnetMaskText = new JTextField(12);
 
@@ -127,21 +122,6 @@ public class LastCalculator {
                     rangeText.setText("잘못된 입력입니다.");
                 }
             }
-
-            private String calculateHostRange(String string, String subnetMask) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'calculateHostRange'");
-            }
-
-            private int calculateHostCount(String subnetMask) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'calculateHostCount'");
-            }
-
-            private boolean isValidIPAddress(String subnetMask) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'isValidIPAddress'");
-            }
         });
 
         c.gridx = 0; c.gridy = 0; panel.add(subnetMaskLabel, c);
@@ -152,6 +132,8 @@ public class LastCalculator {
         c.gridx = 1; panel.add(rangeText, c);
         c.gridx = 1; c.gridy = 3; panel.add(subnetCalcButton, c);
 
+        panel.setOpaque(false); // 배경 투명 설정
+
         return panel;
     }
 
@@ -159,7 +141,7 @@ public class LastCalculator {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(5, 5, 5, 5);
-        
+
         JLabel decimalLabel = new JLabel("10진수:");
         JTextField decimalText = new JTextField(12);
 
@@ -200,9 +182,28 @@ public class LastCalculator {
         c.gridx = 0; c.gridy = 2; panel.add(toBinaryButton, c);
         c.gridx = 1; panel.add(toDecimalButton, c);
 
+        panel.setOpaque(false); // 배경 투명 설정
+
         return panel;
     }
 
-    // IP 유효성 검사, 네트워크 및 브로드캐스트 주소 계산, 호스트 수 및 호스트 범위 계산 메서드도 포함합니다.
-    // 위 코드의 isValidIPAddress, calculateNetworkID, calculateBroadcastAddress, calculateHostCount, calculateHostRange 메서드를 그대로 유지합니다.
+    private static boolean isValidIPAddress(String ip) {
+        return true;
+    }
+
+    private static String calculateNetworkID(String ip, String subnet) {
+        return "NetworkID";
+    }
+
+    private static String calculateBroadcastAddress(String ip, String subnet) {
+        return "BroadcastAddress";
+    }
+
+    private static int calculateHostCount(String subnet) {
+        return 0;
+    }
+
+    private static String calculateHostRange(String network, String subnet) {
+        return "HostRange";
+    }
 }
